@@ -1,8 +1,9 @@
-*.class
 *.iml
+*.properties
+target/*
+.settings/
 .idea/
-
-# Package Files #
-*.jar
-*.war
-*.ear
+*.log
+*.properties
+tutorials/*
+settings/
