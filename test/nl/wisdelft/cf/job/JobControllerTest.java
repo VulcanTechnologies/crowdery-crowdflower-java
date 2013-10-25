@@ -70,7 +70,7 @@ public class JobControllerTest {
     }
 
     @Test
-    public void shouldInvokeWebCallOnRead() throws NullAPIKeyException, MalformedCrowdURLException, JSONException
+    public void shouldInvokeWebCallOnGetJob() throws NullAPIKeyException, MalformedCrowdURLException, JSONException
     {
         when(theWebUtil.urlTransform(eq(JOB_URL),anyString())).thenReturn("aRequest");
         when(theWebJobCall.getJob(anyString())).thenReturn(new JSONObject("{ \"id\" : \"1\"}"));
@@ -78,5 +78,17 @@ public class JobControllerTest {
         Job myJob = theJobController.getJob(theJob.getId());
 
         assertThat(myJob).isNotNull();
+    }
+
+    @Test
+    public void shouldInvokeWebCallOnUpload() throws NullAPIKeyException
+    {
+        when(theWebUtil.urlTransform(eq(JOB_URL),anyString())).thenReturn("aRequest");
+
+        String myBsolutePath = "test-path";
+        String myContentType = "test-content-type";
+        theJobController.upload(theJob, myBsolutePath, myContentType);
+
+        verify(theWebJobCall).upload(eq(myBsolutePath), anyString(), eq(myContentType));
     }
 }

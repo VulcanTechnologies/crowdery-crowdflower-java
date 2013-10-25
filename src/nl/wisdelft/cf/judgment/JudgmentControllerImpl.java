@@ -8,6 +8,8 @@ import org.json.*;
 
 import java.util.*;
 
+import static nl.wisdelft.cf.weblayer.WebUtil.convertAttributesToNameValuePair;
+
 public class JudgmentControllerImpl implements JudgmentController {
 
     private final String URL = "https://api.crowdflower.com/v1/jobs";
@@ -37,7 +39,7 @@ public class JudgmentControllerImpl implements JudgmentController {
         String augURL = theWebUtil.urlTransform(URL,
                                               "/" + aJudgment.getJobId()
                                               + "/judgments.json?key=" + apiKey);
-        theWebCall.create(augURL,aJudgment.getAttributes());
+        theWebCall.create(augURL,convertAttributesToNameValuePair(aJudgment.getAttributes()));
     }
 
     @Override
@@ -66,7 +68,7 @@ public class JudgmentControllerImpl implements JudgmentController {
 
         String augURL = theWebUtil.urlTransform(URL,
                                                 myMorph);
-        theWebCall.update(augURL,aJudgment.getAttributes());
+        theWebCall.update(augURL, convertAttributesToNameValuePair(aJudgment.getAttributes()));
     }
 
     @Override

@@ -3,7 +3,6 @@ package nl.wisdelft.cf.datamodel;
 import com.google.common.collect.*;
 import nl.wisdelft.cf.judgment.*;
 import org.apache.http.*;
-import org.apache.http.message.*;
 import org.json.*;
 import org.slf4j.*;
 
@@ -13,14 +12,14 @@ public class Judgment {
 
     private String id = "";
     private String theJobId = "";
-    private List<NameValuePair> attributes;
+    private Map<String,String> attributes;
     private static final Logger LOGGER = LoggerFactory.getLogger(Judgment.class);
 
     public Judgment(final JSONObject aRawJudgment)
     {
         id = "";
         theJobId = "";
-        attributes = Lists.newArrayList();
+        attributes = Maps.newHashMap();
         jsonIterate(aRawJudgment);
     }
 
@@ -28,7 +27,7 @@ public class Judgment {
     {
         id = aId;
         theJobId = aJobId;
-        attributes = Lists.newArrayList();
+        attributes = Maps.newHashMap();
     }
 
     public void addProperty(
@@ -45,8 +44,7 @@ public class Judgment {
             theJobId = value;
         }
 
-        attributes.add(new BasicNameValuePair("judgment[" + name + "]",
-                                              value));
+        attributes.put("judgment[" + name + "]", value);
     }
 
     public void addProperty(
@@ -59,15 +57,7 @@ public class Judgment {
 
     public String getProperty(String name)
     {
-        for (NameValuePair nameValue : attributes)
-        {
-            if (ifPropertyMatched(name, nameValue))
-            {
-                return nameValue.getValue();
-            }
-        }
-
-        return null;
+        return attributes.get("judgment[" + name + "]");
     }
 
     public String getProperty(JudgAttribute name)
@@ -85,7 +75,7 @@ public class Judgment {
         return theJobId;
     }
 
-    public List<NameValuePair> getAttributes()
+    public Map<String,String> getAttributes()
     {
         return attributes;
     }
@@ -96,13 +86,11 @@ public class Judgment {
         Iterator iterate;
         try
         {
-
             iterate = json.keys();
 
             while (iterate.hasNext())
             {
                 extractPropertyAndAddAsAttribute(json, iterate);
-
             }
         }
         catch (JSONException e)
@@ -117,11 +105,6 @@ public class Judgment {
         String key = (String) aIterate.next();
         addProperty(key,
                     json.get(key).toString());
-    }
-
-    private boolean ifPropertyMatched(final String name, final NameValuePair nameValue)
-    {
-        return nameValue.getName().equals("judgment[" + name + "]");
     }
 
 }

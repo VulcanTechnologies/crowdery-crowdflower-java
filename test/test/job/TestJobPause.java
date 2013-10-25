@@ -1,0 +1,20 @@
+package test.job;
+
+import nl.wisdelft.cf.*;
+import nl.wisdelft.cf.job.*;
+import org.junit.*;
+
+import java.io.*;
+
+public class TestJobPause {
+
+    @Test
+    public void test() throws IOException
+    {
+        CrowdFlower crowd = new CrowdFlowerImpl();
+        JobController myJobController = crowd.getJobController();
+        myJobController.pause("211760");
+
+    }
+
+}
