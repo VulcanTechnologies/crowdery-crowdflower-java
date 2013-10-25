@@ -1,4 +1,4 @@
-package test.account;
+package nl.wisdelft.cf.acceptance.test.account;
 
 import nl.wisdelft.cf.*;
 import org.junit.*;

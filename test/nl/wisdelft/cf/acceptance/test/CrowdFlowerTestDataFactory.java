@@ -1,4 +1,4 @@
-package test;
+package nl.wisdelft.cf.acceptance.test;
 
 import nl.wisdelft.cf.datamodel.*;
 import nl.wisdelft.cf.job.*;
@@ -46,7 +46,7 @@ public class CrowdFlowerTestDataFactory {
 
     public static String createInstruction()
     {
-        return "test-instruction";
+        return "nl.wisdelft.cf.acceptance.test-instruction";
     }
 
     public static String createPathToData()
@@ -75,7 +75,7 @@ public class CrowdFlowerTestDataFactory {
     public static Judgment createJudgment()
     {
         Judgment myJudgment = new Judgment();
-        myJudgment.addProperty(JudgAttribute.data,"test-data");
+        myJudgment.addProperty(JudgAttribute.data,"nl.wisdelft.cf.acceptance.test-data");
         myJudgment.addProperty("id","1");
         return myJudgment;
     }

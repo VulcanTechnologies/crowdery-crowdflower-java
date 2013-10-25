@@ -1,13 +1,12 @@
-package test.job;
+package nl.wisdelft.cf.acceptance.test.job;
 
 
 import nl.wisdelft.cf.*;
 import nl.wisdelft.cf.datamodel.*;
 import nl.wisdelft.cf.exception.*;
 import nl.wisdelft.cf.job.*;
-import nl.wisdelft.cf.order.*;
 import org.junit.*;
-import test.*;
+import nl.wisdelft.cf.acceptance.test.*;
 
 import java.io.*;
 

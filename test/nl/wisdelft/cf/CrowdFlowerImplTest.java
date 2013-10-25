@@ -24,8 +24,8 @@ public class CrowdFlowerImplTest {
     @Test
     public void shouldReturnApiKey()
     {
-        when(theProperties.getProperty("apiKey")).thenReturn("test-api-key");
+        when(theProperties.getProperty("apiKey")).thenReturn("nl.wisdelft.cf.acceptance.test-api-key");
         CrowdFlower myCrowdFlower = new CrowdFlowerImpl(theProperties);
-        assertThat(myCrowdFlower.getApiKey()).isEqualTo("test-api-key");
+        assertThat(myCrowdFlower.getApiKey()).isEqualTo("nl.wisdelft.cf.acceptance.test-api-key");
     }
 }

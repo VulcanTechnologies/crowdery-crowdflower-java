@@ -14,10 +14,10 @@ public class ChannelTest {
     @Before
     public void setUp()
     {
-        Set<String> myAvailableChannels = Sets.newHashSet("test-available");
-        Set<String> myEnabledChannels = Sets.newHashSet("test-enabled");
+        Set<String> myAvailableChannels = Sets.newHashSet("nl.wisdelft.cf.acceptance.test-available");
+        Set<String> myEnabledChannels = Sets.newHashSet("nl.wisdelft.cf.acceptance.test-enabled");
 
-        theChannel = new Channel("test-job-id",
+        theChannel = new Channel("nl.wisdelft.cf.acceptance.test-job-id",
                                  myAvailableChannels,
                                  myEnabledChannels);
     }
@@ -30,7 +30,7 @@ public class ChannelTest {
                         .getOnlyElement(
                                 theChannel.getAvailableChannels()
                         )
-        ).isEqualTo("test-available");
+        ).isEqualTo("nl.wisdelft.cf.acceptance.test-available");
     }
 
     @Test
@@ -41,7 +41,7 @@ public class ChannelTest {
                         .getOnlyElement(
                                 theChannel.getEnabledChannels()
                         )
-        ).isEqualTo("test-enabled");
+        ).isEqualTo("nl.wisdelft.cf.acceptance.test-enabled");
     }
 
 }

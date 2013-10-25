@@ -1,4 +1,4 @@
-package test.examples;
+package nl.wisdelft.cf.acceptance.test.examples;
 
 import nl.wisdelft.cf.*;
 import nl.wisdelft.cf.datamodel.*;
@@ -7,12 +7,12 @@ import nl.wisdelft.cf.job.*;
 import nl.wisdelft.cf.unit.*;
 import org.junit.*;
 import org.junit.Test;
-import test.*;
+import nl.wisdelft.cf.acceptance.test.*;
 
 import java.io.*;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import static test.CrowdFlowerTestDataFactory.*;
+import static nl.wisdelft.cf.acceptance.test.CrowdFlowerTestDataFactory.*;
 
 public class FullScaleJob {
 

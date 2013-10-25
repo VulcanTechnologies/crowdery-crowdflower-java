@@ -5,7 +5,7 @@ import nl.wisdelft.cf.datamodel.*;
 import nl.wisdelft.cf.weblayer.*;
 import org.junit.*;
 import org.mockito.*;
-import test.*;
+import nl.wisdelft.cf.acceptance.test.*;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyList;
@@ -19,13 +19,13 @@ public class JudgmentControllerTest {
     private JudgmentController theJudgmentController;
     @Mock
     private CrowdFlowerFactory theCrowdFlowerFactory;
-    private String theApiKey = "test-api-key";
+    private String theApiKey = "nl.wisdelft.cf.acceptance.test-api-key";
     @Mock
     private WebUtil theWebUtil;
     @Mock
     private WebCall theWebCall;
-    private String theTestJudgmentId = "test-judgment-id";
-    private String theTestJobId = "test-job-id";
+    private String theTestJudgmentId = "nl.wisdelft.cf.acceptance.test-judgment-id";
+    private String theTestJobId = "nl.wisdelft.cf.acceptance.test-job-id";
 
 
     @Before

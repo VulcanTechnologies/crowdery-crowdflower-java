@@ -39,7 +39,7 @@ public class JobControllerTest {
 
         String myJobId = "1";
         theAttributes = Maps.newHashMap();
-        String myApiKey = "test-api-key";
+        String myApiKey = "nl.wisdelft.cf.acceptance.test-api-key";
 
         when(theCrowdFlowerFactory.createWebJobCall()).thenReturn(theWebJobCall);
         when(theCrowdFlowerFactory.createWebUtil()).thenReturn(theWebUtil);
@@ -80,8 +80,8 @@ public class JobControllerTest {
     {
         when(theWebUtil.urlTransform(eq(JOB_URL),anyString())).thenReturn("aRequest");
 
-        String myBsolutePath = "test-path";
-        String myContentType = "test-content-type";
+        String myBsolutePath = "nl.wisdelft.cf.acceptance.test-path";
+        String myContentType = "nl.wisdelft.cf.acceptance.test-content-type";
         theJobController.upload(theJob, myBsolutePath, myContentType);
 
         verify(theWebJobCall).upload(eq(myBsolutePath), anyString(), eq(myContentType));

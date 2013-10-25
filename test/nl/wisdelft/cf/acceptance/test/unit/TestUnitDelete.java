@@ -1,9 +1,8 @@
-package test.unit;
+package nl.wisdelft.cf.acceptance.test.unit;
 
 import nl.wisdelft.cf.*;
 import nl.wisdelft.cf.unit.*;
 import org.json.*;
-import org.json.Test;
 import org.junit.*;
 
 import java.io.*;

@@ -12,8 +12,8 @@ public class AsynchronousUploadTaskTest {
     private JobController theJobController;
     @Mock
     private Job theJob;
-    private String theAbsolutePath = "test-path";
-    private String theContentType = "test-contentType";
+    private String theAbsolutePath = "nl.wisdelft.cf.acceptance.test-path";
+    private String theContentType = "nl.wisdelft.cf.acceptance.test-contentType";
     private AsynchronousUploadTask theTask;
 
     @Before

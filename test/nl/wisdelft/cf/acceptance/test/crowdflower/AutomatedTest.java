@@ -1,4 +1,4 @@
-package test.crowdflower;
+package nl.wisdelft.cf.acceptance.test.crowdflower;
 
 import nl.wisdelft.cf.*;
 import nl.wisdelft.cf.datamodel.*;
