@@ -58,7 +58,7 @@ public class CrowdFlowerTestDataFactory {
         return "text/csv";
     }
 
-    public static Job createJob()
+    public static Job createSampleJob()
     {
         Job myJob = new Job();
 

@@ -5,13 +5,17 @@ import nl.wisdelft.cf.datamodel.*;
 import nl.wisdelft.cf.job.*;
 import nl.wisdelft.cf.unit.*;
 import org.json.*;
+import org.junit.*;
+import org.junit.Test;
 
 import java.io.*;
 import java.util.*;
 
 public class TestJudgement {
 
-    public static void main(String[] args) throws IOException, JSONException
+    @Test
+    @Ignore
+    public void shouldReturnJudgments() throws IOException, JSONException
     {
         CrowdFlower myCrowdFlower = new CrowdFlowerImpl();
         JobController myJobController = myCrowdFlower.getJobController();

@@ -9,12 +9,6 @@ import java.util.*;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-/**
- * Created with IntelliJ IDEA.
- * User: debarshi
- * Date: 10/4/13
- * Time: 1:07 AM
- */
 public class CrowdFlowerImplTest {
 
     @NotNull

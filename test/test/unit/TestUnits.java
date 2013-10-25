@@ -5,10 +5,17 @@ import nl.wisdelft.cf.datamodel.*;
 import nl.wisdelft.cf.exception.*;
 import nl.wisdelft.cf.job.*;
 import nl.wisdelft.cf.unit.*;
+import org.json.*;
+import org.junit.*;
+import org.junit.Test;
+
+import java.io.*;
 
 public class TestUnits {
 
-    public static void main(String[] args) throws NullAPIKeyException
+    @Ignore
+    @Test
+    public void shouldGetAllUnits() throws IOException, JSONException, NullAPIKeyException
     {
         JobController myJobController = CrowdFlowerFactory.getJobController();
 

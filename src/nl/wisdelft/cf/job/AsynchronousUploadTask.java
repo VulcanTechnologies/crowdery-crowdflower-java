@@ -3,14 +3,14 @@ package nl.wisdelft.cf.job;
 import nl.wisdelft.cf.datamodel.*;
 import nl.wisdelft.cf.exception.*;
 
-public class AsynchronousUploadTask implements Runnable {
+class AsynchronousUploadTask implements Runnable {
     private JobController theJobController;
     private final Job theJob;
     private final String theAbsolutePath;
     private final String theContentType;
 
     public AsynchronousUploadTask(
-            final JobControllerImpl aJobController,
+            final JobController aJobController,
             final Job aJob,
             final String aAAbsolutePath,
             final String aContentType)

@@ -2,6 +2,7 @@ package test.examples;
 
 import nl.wisdelft.cf.*;
 import nl.wisdelft.cf.datamodel.*;
+import nl.wisdelft.cf.exception.*;
 import nl.wisdelft.cf.job.*;
 import nl.wisdelft.cf.unit.*;
 import org.junit.*;
@@ -11,12 +12,13 @@ import test.*;
 import java.io.*;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static test.CrowdFlowerTestDataFactory.*;
 
 public class FullScaleJob {
 
-    private static final String INSTRUCTION = CrowdFlowerTestDataFactory.createInstruction();
+    private static final String INSTRUCTION = createInstruction();
     private CrowdFlower theCrowdFlower;
-    private static final String CML = CrowdFlowerTestDataFactory.createCML();
+    private static final String CML = createCML();
 
     @Before
     public void setUp() throws IOException
@@ -24,23 +26,21 @@ public class FullScaleJob {
         theCrowdFlower = new CrowdFlowerImpl();
     }
 
+    @Ignore
     @Test
-    public void endToEndCrowdFlower()
+    public void endToEndCrowdFlower() throws NullAPIKeyException
     {
-        /* Creates an empty job */
-
         try
         {
             JobController myJobController = theCrowdFlower.getJobController();
 
-			/* Updates the empty myJobController */
-            // Note it is important to clear the properties
-
-            Job myJob = CrowdFlowerTestDataFactory.createJob();
+            Job myJob = CrowdFlowerTestDataFactory.createSampleJob();
             Job myJobAfterCreation = myJobController.create(myJob);
 
             assertThat(myJobAfterCreation.getAttribute(JobAttribute.INSTRUCTIONS)).isEqualTo(INSTRUCTION);
             assertThat(myJobAfterCreation.getAttribute(JobAttribute.CML)).isEqualTo(CML);
+
+            myJobController.upload(myJobAfterCreation, createPathToData(), createApplicationType());
 
             Thread.sleep(1500);
 
@@ -54,7 +54,7 @@ public class FullScaleJob {
             myUnit.addProperty("data", CrowdFlowerTestDataFactory.createUnitData());
             myUnitController.create(myUnit);
 
-            assertThat(myJobController.getJobUnits(myJobAfterCreation.getId()).size()).isEqualTo(1);
+            assertThat(myJobController.getJobUnits(myJobAfterCreation.getId()).size()).isEqualTo(4);
         }
 
         catch (InterruptedException e)

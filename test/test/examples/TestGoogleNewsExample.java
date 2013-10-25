@@ -23,6 +23,7 @@ public class TestGoogleNewsExample {
         theJobController = myCrowdFlower.getJobController();
     }
 
+    @Ignore
     @Test
     public void shouldCreateGoogleNewsTask() throws IOException
     {

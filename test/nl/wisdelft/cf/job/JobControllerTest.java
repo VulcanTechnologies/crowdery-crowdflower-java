@@ -21,11 +21,6 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * Created with IntelliJ IDEA.
- * User: debarshi
- */
-
 public class JobControllerTest {
 
     public static final String JOB_URL = "https://api.crowdflower.com/v1/jobs";

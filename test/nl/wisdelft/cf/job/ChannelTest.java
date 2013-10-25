@@ -7,9 +7,6 @@ import java.util.*;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-/**
- * User: Debarshi Basak
- */
 public class ChannelTest {
 
     private Channel theChannel;

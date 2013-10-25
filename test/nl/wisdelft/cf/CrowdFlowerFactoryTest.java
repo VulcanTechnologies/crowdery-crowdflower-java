@@ -5,11 +5,6 @@ import org.junit.*;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-/**
- * Created with IntelliJ IDEA.
- * User: debarshi
- */
-
 public class CrowdFlowerFactoryTest {
 
     private CrowdFlowerFactory theCrowdFlowerFactory;

@@ -22,10 +22,11 @@ public class TestDataUpload {
         theJobController = myCrowdFlower.getJobController();
     }
 
+    @Ignore
     @Test
     public void shouldUploadData()
     {
-        Job myJob = CrowdFlowerTestDataFactory.createJob();
+        Job myJob = CrowdFlowerTestDataFactory.createSampleJob();
         theJobController.create(myJob);
         try
         {

@@ -5,13 +5,19 @@ import nl.wisdelft.cf.datamodel.*;
 import nl.wisdelft.cf.exception.*;
 import nl.wisdelft.cf.job.*;
 import nl.wisdelft.cf.unit.*;
+import org.json.*;
+import org.junit.*;
+import org.junit.Test;
 import test.*;
 
+import java.io.*;
 import java.util.*;
 
 public class TestGold2 {
 
-    public static void main(String[] args) throws NullAPIKeyException, InterruptedException
+    @Ignore
+    @Test
+    public void shouldAddGold() throws IOException, JSONException, InterruptedException
     {
 
         String cml = "<img id=\"\" src=\"{{images}}\"><cml:checkbox validates=\"required\" label=\"Contains human\" class=\"\"></cml:checkbox>";
@@ -20,7 +26,7 @@ public class TestGold2 {
         {
             CrowdFlower crowd = new CrowdFlowerImpl();
             JobController myJobController = crowd.getJobController();
-            Job myJob = CrowdFlowerTestDataFactory.createJob();
+            Job myJob = CrowdFlowerTestDataFactory.createSampleJob();
             Job myJobAfterCreation = myJobController.create(myJob);
 
             myJobController.upload(myJobAfterCreation, "log/crowd.csv",

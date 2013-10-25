@@ -8,6 +8,7 @@ import java.io.*;
 
 public class TestJobPause {
 
+    @Ignore
     @Test
     public void test() throws IOException
     {

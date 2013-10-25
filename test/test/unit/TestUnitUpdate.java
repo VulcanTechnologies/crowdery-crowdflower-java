@@ -4,10 +4,16 @@ import nl.wisdelft.cf.*;
 import nl.wisdelft.cf.datamodel.*;
 import nl.wisdelft.cf.unit.*;
 import org.json.*;
+import org.json.Test;
+import org.junit.*;
+
+import java.io.*;
 
 public class TestUnitUpdate {
-    public static void main(String[] args) throws JSONException
-    {
+
+    @Ignore
+    @org.junit.Test
+    public void shouldUpdateUnits() throws IOException, JSONException {
         UnitController myUnitController = CrowdFlowerFactory.getUnitController();
 
         Unit myUnit = new Unit();

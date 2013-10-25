@@ -5,12 +5,16 @@ import nl.wisdelft.cf.datamodel.*;
 import nl.wisdelft.cf.job.*;
 import nl.wisdelft.cf.unit.*;
 import org.json.*;
+import org.junit.*;
+import org.junit.Test;
 
 import java.io.*;
 
 public class TestGold {
 
-    public static void main(String[] args) throws IOException, JSONException
+    @Ignore
+    @Test
+    public void shouldAddGold() throws IOException, JSONException
     {
         JobController myJobController = CrowdFlowerFactory.getJobController();
         UnitController myUnitController = CrowdFlowerFactory.getUnitController();

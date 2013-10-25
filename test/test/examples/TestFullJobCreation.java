@@ -17,6 +17,7 @@ public class TestFullJobCreation {
     private static final String INSTRUCTION = CrowdFlowerTestDataFactory.createInstruction();
     private static final String CML = CrowdFlowerTestDataFactory.createCML();
 
+    @Ignore
     @Test
     public void test() throws IOException
     {

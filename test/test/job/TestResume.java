@@ -8,6 +8,7 @@ import java.io.*;
 
 public class TestResume {
 
+    @Ignore
     @Test
     public void test() throws IOException
     {

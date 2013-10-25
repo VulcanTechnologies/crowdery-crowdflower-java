@@ -20,6 +20,7 @@ public class AutomatedTest {
         theCrowdFlower = new CrowdFlowerImpl();
     }
 
+    @Ignore
     @Test
     public void shouldReturnJob() throws IOException
     {
@@ -27,6 +28,7 @@ public class AutomatedTest {
         assertThat(myJobController).isNotNull();
     }
 
+    @Ignore
     @Test
     public void shouldReturnListOfJobs() throws IOException
     {

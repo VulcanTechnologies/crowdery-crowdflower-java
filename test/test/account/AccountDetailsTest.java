@@ -9,6 +9,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class AccountDetailsTest {
 
+    @Ignore
     @Test
     public void test() throws IOException
     {
