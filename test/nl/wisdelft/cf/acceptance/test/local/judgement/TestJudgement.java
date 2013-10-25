@@ -1,4 +1,4 @@
-package nl.wisdelft.cf.acceptance.test.judgement;
+package nl.wisdelft.cf.acceptance.test.local.judgement;
 
 import nl.wisdelft.cf.*;
 import nl.wisdelft.cf.datamodel.*;

@@ -1,4 +1,4 @@
-package nl.wisdelft.cf.acceptance.test.job;
+package nl.wisdelft.cf.acceptance.test.local.job;
 
 import nl.wisdelft.cf.*;
 import nl.wisdelft.cf.job.*;

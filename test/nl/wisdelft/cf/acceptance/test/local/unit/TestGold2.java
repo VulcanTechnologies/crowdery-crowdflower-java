@@ -1,4 +1,4 @@
-package nl.wisdelft.cf.acceptance.test.unit;
+package nl.wisdelft.cf.acceptance.test.local.unit;
 
 import nl.wisdelft.cf.*;
 import nl.wisdelft.cf.datamodel.*;
@@ -8,7 +8,6 @@ import nl.wisdelft.cf.unit.*;
 import org.json.*;
 import org.junit.*;
 import org.junit.Test;
-import nl.wisdelft.cf.acceptance.test.*;
 
 import java.io.*;
 import java.util.*;

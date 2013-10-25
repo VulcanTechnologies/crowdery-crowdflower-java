@@ -1,4 +1,4 @@
-package nl.wisdelft.cf.acceptance.test;
+package nl.wisdelft.cf;
 
 import nl.wisdelft.cf.datamodel.*;
 import nl.wisdelft.cf.job.*;

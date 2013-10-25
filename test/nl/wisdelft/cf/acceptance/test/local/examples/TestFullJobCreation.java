@@ -1,10 +1,9 @@
-package nl.wisdelft.cf.acceptance.test.examples;
+package nl.wisdelft.cf.acceptance.test.local.examples;
 
 import nl.wisdelft.cf.*;
 import nl.wisdelft.cf.datamodel.*;
 import nl.wisdelft.cf.job.*;
 import org.junit.*;
-import nl.wisdelft.cf.acceptance.test.*;
 
 import java.io.*;
 

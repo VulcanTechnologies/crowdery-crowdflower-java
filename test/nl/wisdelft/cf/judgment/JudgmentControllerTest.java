@@ -5,7 +5,6 @@ import nl.wisdelft.cf.datamodel.*;
 import nl.wisdelft.cf.weblayer.*;
 import org.junit.*;
 import org.mockito.*;
-import nl.wisdelft.cf.acceptance.test.*;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyList;

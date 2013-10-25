@@ -1,4 +1,4 @@
-package nl.wisdelft.cf.acceptance.test.unit;
+package nl.wisdelft.cf.acceptance.test.local.unit;
 
 import nl.wisdelft.cf.*;
 import nl.wisdelft.cf.datamodel.*;
