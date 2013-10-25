@@ -2,6 +2,7 @@ package test;
 
 import nl.wisdelft.cf.datamodel.*;
 import nl.wisdelft.cf.job.*;
+import nl.wisdelft.cf.judgment.*;
 import org.json.*;
 
 public class CrowdFlowerTestDataFactory {
@@ -69,5 +70,13 @@ public class CrowdFlowerTestDataFactory {
         myJob.addProperty("instructions", createInstruction());
         myJob.addProperty("cml", createCML());
         return myJob;
+    }
+
+    public static Judgment createJudgment()
+    {
+        Judgment myJudgment = new Judgment();
+        myJudgment.addProperty(JudgAttribute.data,"test-data");
+        myJudgment.addProperty("id","1");
+        return myJudgment;
     }
 }

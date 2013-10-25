@@ -2,9 +2,6 @@ package nl.wisdelft.cf.exception;
 
 public class NullAPIKeyException extends Exception {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
 
     public NullAPIKeyException()

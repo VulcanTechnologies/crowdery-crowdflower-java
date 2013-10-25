@@ -15,6 +15,13 @@ public class Judgment {
     private Map<String,String> attributes;
     private static final Logger LOGGER = LoggerFactory.getLogger(Judgment.class);
 
+    public Judgment()
+    {
+        id = "";
+        theJobId = "";
+        attributes = Maps.newHashMap();
+    }
+
     public Judgment(final JSONObject aRawJudgment)
     {
         id = "";

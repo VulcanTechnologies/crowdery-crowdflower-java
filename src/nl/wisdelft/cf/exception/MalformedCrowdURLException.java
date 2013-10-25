@@ -4,9 +4,6 @@ import java.net.*;
 
 public class MalformedCrowdURLException extends MalformedURLException {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
     private String URL;
 

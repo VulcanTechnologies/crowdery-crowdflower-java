@@ -53,7 +53,7 @@ public interface JobController {
     public List<Unit> getJobUnits(String aJobId);
 
     /**
-     * [ web call ] Http get operation for the given job by aJobId
+     * [ web call ] Get all the attributes for that given jobId
      *
      * @return
      * @throws NullAPIKeyException
@@ -63,13 +63,7 @@ public interface JobController {
     public Job getJob(String aJobId) throws NullAPIKeyException;
 
     /**
-     * [ non-web call ] Adds the property to the list of attributes based on the enum
-     *
-     * @param property
-     * @param value
-     */
-
-    /**
+     * Updates the Job with the properties set in the new Job Object
      * @throws NullAPIKeyException
      * @Web [ web call ] HTTP PUT operation on the job by id
      */
@@ -77,7 +71,7 @@ public interface JobController {
     public void update(Job aJob) throws NullAPIKeyException;
 
     /**
-     * [ web call ] Uploads data from the specified rss feed
+     * [ web call ] Uploads data from the specified rss feed in the Job specified
      *
      * @param url
      * @Web
@@ -86,7 +80,7 @@ public interface JobController {
     public void upload(Job aJob, String url);
 
     /**
-     * [ non-web call ] HTTP GET call on status of units x
+     * [ non-web call ] Obtains the uploading status of the units for the given jobId
      *
      * @return
      */
