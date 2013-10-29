@@ -8,7 +8,7 @@ public interface JudgmentController {
 
     public void create(Judgment aJudgment);
 
-    public Judgment getJudgment(String aJobId,String aJudgmentId);
+    public Judgment getJudgment(String aJobId, String aJudgmentId);
 
     /**
      * [ web call ] Possible parameters - limit and page

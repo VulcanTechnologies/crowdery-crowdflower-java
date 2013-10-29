@@ -49,7 +49,7 @@ public class TestJobOrder {
 
 
         myJobToBeUpdated.addProperty(JobAttribute.PAGES_PER_ASSIGNMENT,
-                        "1");
+                        "0.1");
         myJobToBeUpdated.addProperty(JobAttribute.UNITS_PER_ASSIGNMENT,
                         "1");
 
@@ -70,19 +70,6 @@ public class TestJobOrder {
         {
             e.printStackTrace();
         }
-
-//        Order order = myJobController.order(myJobToBeUpdated.getId());
-
-//        order.setDebitUnitCount("3");
-//        order.addChannel("amt");
-
-/*
-*
-* Costs money
-*
-*/
-        //	order.create();
-
 
     }
 

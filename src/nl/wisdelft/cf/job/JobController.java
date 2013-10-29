@@ -2,7 +2,6 @@ package nl.wisdelft.cf.job;
 
 import nl.wisdelft.cf.datamodel.*;
 import nl.wisdelft.cf.exception.*;
-import nl.wisdelft.cf.order.*;
 
 import org.json.*;
 
@@ -18,8 +17,7 @@ public interface JobController {
      *
      * @param absolutePath
      * @param contentType
-     * @throws NullAPIKeyException
-     * @Web
+     * @throws nl.wisdelft.cf.exception.NullAPIKeyException
      */
     public void upload(Job aJob,
                        String absolutePath,
@@ -31,7 +29,6 @@ public interface JobController {
      * [ web call ] Same as upload but with parameters
      * Possible parameters force
      *
-     * @Web
      */
     public void upload(String aJobId,
                        String absolutePath,
@@ -56,7 +53,7 @@ public interface JobController {
      * [ web call ] Get all the attributes for that given jobId
      *
      * @return
-     * @throws NullAPIKeyException
+     * @throws nl.wisdelft.cf.exception.NullAPIKeyException
      * @Web
      */
 
@@ -64,7 +61,7 @@ public interface JobController {
 
     /**
      * Updates the Job with the properties set in the new Job Object
-     * @throws NullAPIKeyException
+     * @throws nl.wisdelft.cf.exception.NullAPIKeyException
      * @Web [ web call ] HTTP PUT operation on the job by id
      */
 
@@ -87,12 +84,6 @@ public interface JobController {
 
     public JSONObject getUnitsStatus(String aJobId);
 
-    /**
-     * @return TODO
-     * @Web [ web call ] Creates an new order for the job
-     */
-
-    public Order order(String aJobId);
 
     /**
      * [ web call ] Pauses the job

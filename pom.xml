@@ -7,7 +7,7 @@
 
     <build>
         <sourceDirectory>src</sourceDirectory>
-        <testSourceDirectory>nl.wisdelft.cf.acceptance.test</testSourceDirectory>
+        <testSourceDirectory>test</testSourceDirectory>
         <resources>
             <resource>
                 <directory>src</directory>
@@ -85,67 +85,5 @@
             <version>1.9.13</version>
         </dependency>
     </dependencies>
-
-
-
-
-    <profiles>
-
-        <profile>
-            <id>Acceptance</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <version>1.3</version>
-                        <executions>
-                            <execution>
-                                <phase>nl.wisdelft.cf.acceptance.test</phase>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                                <configuration>
-                                    <tasks>
-                                        <echo>Running only acceptance nl.wisdelft.cf.acceptance.test</echo>
-                                    </tasks>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>General</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <version>1.3</version>
-                        <executions>
-                            <execution>
-                                <phase>nl.wisdelft.cf.acceptance.test</phase>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                                <configuration>
-                                    <tasks>
-                                        <echo>Running no acceptance tests</echo>
-                                        <excludes>
-                                            <exclude>**/acceptance/nl.wisdelft.cf.acceptance.test/*.*</exclude>
-                                        </excludes>
-                                    </tasks>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-    </profiles>
 
 </project>

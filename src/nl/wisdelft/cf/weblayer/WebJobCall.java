@@ -37,7 +37,7 @@ public class WebJobCall extends WebCall {
      *
      * @param URL
      * @return
-     * @throws MalformedCrowdURLException
+     * @throws nl.wisdelft.cf.exception.MalformedCrowdURLException
      */
 
     public  JSONObject getJob(String URL) throws MalformedCrowdURLException
@@ -149,7 +149,7 @@ public class WebJobCall extends WebCall {
 
         try
         {
-            String output = "";
+            String output;
 
             HttpPost post = new HttpPost(URL);
             post.setEntity(new UrlEncodedFormEntity(attributes));

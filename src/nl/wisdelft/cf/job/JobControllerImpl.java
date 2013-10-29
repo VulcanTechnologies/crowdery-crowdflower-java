@@ -4,7 +4,6 @@ import nl.wisdelft.cf.*;
 import nl.wisdelft.cf.datamodel.*;
 import nl.wisdelft.cf.exception.*;
 import nl.wisdelft.cf.judgment.*;
-import nl.wisdelft.cf.order.*;
 import nl.wisdelft.cf.unit.*;
 import nl.wisdelft.cf.weblayer.*;
 import org.apache.http.*;
@@ -267,18 +266,6 @@ public class JobControllerImpl implements JobController {
         return theWebJobCall.getUnits(theWebUtil.urlTransform(URL,
                                                               "/" + aJobId
                                                               + "/units/ping.json?key=" + apiKey));
-    }
-
-    @Override
-    public Order order(String aJobId)
-    {
-
-        LOGGER.info("Creating order for job with id  - {}",
-                    aJobId);
-        return new OrderImpl(aJobId,
-                             apiKey);
-
-
     }
 
     @Override

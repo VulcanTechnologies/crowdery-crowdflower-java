@@ -1,21 +1,107 @@
-crowdery
-========
+JCrowdFlower
+=======
+JCrowdflower is a library for crowdflower web interface wrapped up in java.
+
+This project is part of Web information Systems groups.
 
 
-This repository consists of two projects.
+Credits to
+
+- Prof. Alessandro Bozzon (project conceptualization)
+- Prof. Jasper Oosterman (reviewer)
+- Debarshi Basak (main developer)
+
+![tudelft](http://www.se.ewi.tudelft.nl/dmcd2011/images/TU-Delft_logo.gif)
 
 ### jCrowdFlower
 
 This projects is a Java wrapper for web APIs exposed by CrowdFlower. This project is located in `master` branch.
 
-### FlowerJS
+You need to build the project as follows
 
-This project is written in [NodeJS](http://nodejs.org/). This project wraps the Web services exposed by CrowdFlower. It can be found in `NodeJS` branch.
+```  mvn clean install ```
 
-##### Pre-requisites
 
-* NodeJS
-* Restler - Install as `npm install restler`
+### Tutorial
+
+Simple job creation
+
+#### Note
+- Create a file called default.properties.
+- Add a property apiKey="your-api-key"
+- Include this project in your pom.xml as follows
+
+```
+<dependency>
+    <groupId>crowdflower-java</groupId>
+    <artifactId>crowdflower-java</artifactId>
+    <version>1.0.1-SNAPSHOT</version>
+<dependency>
+```
+
+Then the following is the implementation for creating a job
+
+```
+import nl.wisdelft.cf.*;
+import nl.wisdelft.cf.datamodel.*;
+import nl.wisdelft.cf.exception.*;
+import nl.wisdelft.cf.job.*;
+import nl.wisdelft.cf.order.*;
+
+public class CrowdFlowerTutorial {
+
+    public static void main(String[] args) throws NullAPIKeyException, InterruptedException
+    {
+        /**
+         * Alternatively you can declare it as
+         * CrowdFlowerFactory.setProperties("/path/to/properties/file");
+         *
+         * or
+         *
+         * CrowdFlowerFactory.setApiKey("api-key");
+         */
+
+        JobController myJobController = CrowdFlowerFactory.getJobController();
+        Job myJob = new Job();
+
+        /**
+         * You must have following three properties to create a job successfully
+         */
+
+        myJob.addProperty(JobAttribute.TITLE, "Test Job title");
+        myJob.addProperty(JobAttribute.INSTRUCTIONS, "Test instructions");
+        myJob.addProperty(JobAttribute.CML, "<cml>Test cml </cml>");
+        myJob.addProperty(JobAttribute.PAGES_PER_ASSIGNMENT,
+                          "0.1");
+        myJob.addProperty(JobAttribute.UNITS_PER_ASSIGNMENT,
+                          "1");
+
+        Job myJobAfterCreation = myJobController.create(myJob);
+
+        myJobController.upload(myJobAfterCreation, "log/crowd.csv", "text/csv");
+
+        OrderController myOrderController = CrowdFlowerFactory.getOrderController();
+
+        Order myOrder = new Order(myJobAfterCreation.getId());
+        myOrder.setDebitUnitCount("3");
+        myOrder.addChannel("amt");
+
+        /*
+        * Costs money
+        */
+
+        myOrderController.create(myOrder);
+
+        /**
+         * Takes some time to create
+         */
+        myOrderController.cancel(myJobAfterCreation.getId());
+    }
+}
+
+```
+
+
 
 ### Crowdflower behaviour
 
@@ -28,47 +114,3 @@ When updating an entity we have seen the following behaviour:
 * When an error attribute is returned no fields have been updated
 * When a HTTP 200 reponse is returned with no error attribute all attributes are updated.
 
-
-### Tutorial
-
-Simple job creation
-
-#### Note
-- Create a file called default.properties.
-- Add a property apiKey="your-api-key"
-
-Then the following is the implementation for creating a job
-
-```
-package nl.wisdelft.cf.acceptance.test.local.examples;
-
-import nl.wisdelft.cf.*;
-import nl.wisdelft.cf.datamodel.*;
-import nl.wisdelft.cf.job.*;
-
-public class CrowdFlowerTutorial {
-
-    public static void main(String[] args)
-    {
-        /**
-         * Alternatively you can declare it as
-         * CrowdFlowerFactory.setProperties("/path/to/properties/file");
-         */
-
-        JobController myJobController = CrowdFlowerFactory.getJobController();
-        Job myJob = new Job();
-
-        /**
-         * You must have following three properties to create a job successfully
-         */
-
-        myJob.addProperty(JobAttribute.TITLE,"Test Job title");
-        myJob.addProperty(JobAttribute.INSTRUCTIONS,"Test instructions");
-        myJob.addProperty(JobAttribute.CML,"<cml>nl.wisdelft.cf.acceptance.test cml </cml>");
-
-        Job myJobAfterCreation = myJobController.create(myJob);
-    }
-}
-
-
-```
