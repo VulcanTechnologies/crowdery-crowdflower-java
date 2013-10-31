@@ -4,8 +4,7 @@ JCrowdflower is a library for crowdflower web interface wrapped up in java.
 
 This project is part of Web information Systems groups.
 
-
-Credits to
+### Contributors
 
 - Alessandro Bozzon (project conceptualization)
 - Debarshi Basak (main developer)
