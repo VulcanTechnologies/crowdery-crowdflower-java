@@ -6,9 +6,9 @@ This project is part of Web information Systems groups.
 
 ### Contributors
 
-- Alessandro Bozzon (project conceptualization)
 - Debarshi Basak (main developer)
 - Jasper Oosterman (reviewer)
+- Alessandro Bozzon (project conceptualization)
 
 
 ### jCrowdFlower
@@ -115,7 +115,8 @@ When updating an entity we have seen the following behaviour:
 ## Organization
 **Delft University of Technology** <br />
 [Faculty] Electrical Engineering, Computer Science and Mathematics<br />
-[Department] Web Information Systems<br />
-[Contact] jasper.oosterman@gmail.com <br />
+[Department] Software and Computing Technology
+[Group] Web Information Systems<br />
+[Contact] j.e.g.oosterman@tudelft.nl <br />
 
 ![tudelft](http://www.se.ewi.tudelft.nl/dmcd2011/images/TU-Delft_logo.gif)
