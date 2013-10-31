@@ -7,11 +7,10 @@ This project is part of Web information Systems groups.
 
 Credits to
 
-- Prof. Alessandro Bozzon (project conceptualization)
-- Prof. Jasper Oosterman (reviewer)
+- Alessandro Bozzon (project conceptualization)
 - Debarshi Basak (main developer)
+- Jasper Oosterman (reviewer)
 
-![tudelft](http://www.se.ewi.tudelft.nl/dmcd2011/images/TU-Delft_logo.gif)
 
 ### jCrowdFlower
 
@@ -31,7 +30,7 @@ Simple job creation
 - Add a property apiKey="your-api-key"
 - Include this project in your pom.xml as follows
 
-```
+```xml
 <dependency>
     <groupId>crowdflower-java</groupId>
     <artifactId>crowdflower-java</artifactId>
@@ -41,7 +40,7 @@ Simple job creation
 
 Then the following is the implementation for creating a job
 
-```
+```java
 import nl.wisdelft.cf.*;
 import nl.wisdelft.cf.datamodel.*;
 import nl.wisdelft.cf.exception.*;
@@ -114,3 +113,10 @@ When updating an entity we have seen the following behaviour:
 * When an error attribute is returned no fields have been updated
 * When a HTTP 200 reponse is returned with no error attribute all attributes are updated.
 
+## Organization
+**Delft University of Technology** <br />
+[Faculty] Electrical Engineering, Computer Science and Mathematics<br />
+[Department] Web Information Systems<br />
+[Contact] jasper.oosterman@gmail.com <br />
+
+![tudelft](http://www.se.ewi.tudelft.nl/dmcd2011/images/TU-Delft_logo.gif)
