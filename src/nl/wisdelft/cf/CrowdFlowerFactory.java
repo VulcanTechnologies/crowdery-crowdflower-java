@@ -13,7 +13,7 @@ import java.util.*;
 
 public class CrowdFlowerFactory {
 
-    private static CrowdFlower theCrowdFlower = new CrowdFlowerImpl();
+    private static CrowdFlower theCrowdFlower;
 
     public CrowdFlowerFactory()
     {
@@ -32,6 +32,11 @@ public class CrowdFlowerFactory {
             e.printStackTrace();
         }
         theCrowdFlower = new CrowdFlowerImpl(myProperties.getProperty("apiKey"));
+    }
+
+    public static void setProperties()
+    {
+       theCrowdFlower = new CrowdFlowerImpl();
     }
 
     public static void setApiKey(String aApiKey)
