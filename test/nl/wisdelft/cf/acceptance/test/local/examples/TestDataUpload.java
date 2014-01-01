@@ -21,22 +21,30 @@ public class TestDataUpload {
         theJobController = myCrowdFlower.getJobController();
     }
 
-    @Ignore
+//    @Ignore
+//    @Test
+//    public void shouldUploadData()
+//    {
+//        Job myJob = CrowdFlowerTestDataFactory.createSampleJob();
+//        Job myJob1 = theJobController.create(myJob);
+//        try
+//        {
+//            theJobController.upload(myJob, PATH,
+//                          APPLICATION_TYPE);
+//        }
+//        catch (NullAPIKeyException e)
+//        {
+//            e.printStackTrace();
+//        }
+//
+//        theJobController.setPayPerAssignment(myJob1, "1");
+//    }
+
     @Test
-    public void shouldUploadData()
+    public void shouldCreateTasks()
     {
         Job myJob = CrowdFlowerTestDataFactory.createSampleJob();
         Job myJob1 = theJobController.create(myJob);
-        try
-        {
-            theJobController.upload(myJob, PATH,
-                          APPLICATION_TYPE);
-        }
-        catch (NullAPIKeyException e)
-        {
-            e.printStackTrace();
-        }
-
         theJobController.setPayPerAssignment(myJob1, "1");
     }
 

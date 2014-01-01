@@ -570,9 +570,10 @@ public class JobControllerImpl implements JobController {
 
         Map<String, String> myPayment = new HashMap<String, String>();
         myPayment.put("job[payment_cents]",pay);
+        myPayment.put("key",apiKey);
 
         String augURL = theWebUtil.urlTransform(URL,
-                                                "/" + aJob.getId() + ".json?key="+apiKey);
+                                                "/" + aJob.getId() + ".json");
         theWebJobCall.update(augURL,
                              convertAttributesToNameValuePair(myPayment));
 
