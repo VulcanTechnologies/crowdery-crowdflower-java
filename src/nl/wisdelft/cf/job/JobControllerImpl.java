@@ -568,13 +568,13 @@ public class JobControllerImpl implements JobController {
 
         LOGGER.info("Adding for job id  - " + aJob.getId());
 
-        aJob.addProperty("payment_cent",
-                         pay);
+        Map<String, String> myPayment = new HashMap<String, String>();
+        myPayment.put("job[payment_cents]",pay);
+
         String augURL = theWebUtil.urlTransform(URL,
-                                                "/" + aJob.getId() + ".json?key="
-                                                + apiKey);
+                                                "/" + aJob.getId() + ".json?key="+apiKey);
         theWebJobCall.update(augURL,
-                             convertAttributesToNameValuePair(aJob.getAttributes()));
+                             convertAttributesToNameValuePair(myPayment));
 
     }
 

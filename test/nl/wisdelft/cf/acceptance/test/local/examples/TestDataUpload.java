@@ -26,7 +26,7 @@ public class TestDataUpload {
     public void shouldUploadData()
     {
         Job myJob = CrowdFlowerTestDataFactory.createSampleJob();
-        theJobController.create(myJob);
+        Job myJob1 = theJobController.create(myJob);
         try
         {
             theJobController.upload(myJob, PATH,
@@ -36,6 +36,8 @@ public class TestDataUpload {
         {
             e.printStackTrace();
         }
+
+        theJobController.setPayPerAssignment(myJob1, "1");
     }
 
 }
