@@ -1,0 +1,117 @@
+import java.text.SimpleDateFormat
+
+buildscript {
+    ext.kotlin_version = '1.0.3'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.3"
+    }
+}
+
+plugins {
+  id 'java'
+  id 'com.github.johnrengelman.shadow' version '1.2.2'
+  id 'application'
+  id 'pl.allegro.tech.build.axion-release' version '1.2.0'
+  id 'maven'
+}
+
+apply plugin: 'kotlin'
+
+project.group = "nl.wisdelft"
+project.version = scmVersion.version
+
+repositories {
+  jcenter()
+  mavenCentral()
+  maven {
+      url "https://jitpack.io"
+  }
+  maven {
+      url "http://vulcin.jfrog.io/vulcin/libs-releases-local"
+      credentials {
+          username artifactoryUser
+          password artifactoryPassword
+      }
+  }
+  maven {
+      url "http://vulcin.jfrog.io/vulcin/libs-snapshots-local"
+      credentials {
+          username artifactoryUser
+          password artifactoryPassword
+      }
+  }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "http://vulcin.jfrog.io/vulcin/libs-releases-local") {
+              authentication(userName: artifactoryUser, password: artifactoryPassword)
+            }
+            snapshotRepository(url: "http://vulcin.jfrog.io/vulcin/libs-snapshots-local") {
+              authentication(userName: artifactoryUser, password: artifactoryPassword)
+            }
+        }
+    }
+}
+
+uploadShadow {
+    repositories {
+        mavenDeployer {
+            repository(url: "http://vulcin.jfrog.io/vulcin/libs-releases-local") {
+                authentication(userName: artifactoryUser, password: artifactoryPassword)
+            }
+            snapshotRepository(url: "http://vulcin.jfrog.io/vulcin/libs-snapshots-local") {
+                authentication(userName: artifactoryUser, password: artifactoryPassword)
+            }
+        }
+    }
+}
+
+configurations.all {
+    // Check for updates every build
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+dependencies {
+    compile group: 'org.json', name: 'json', version:'20090211'
+    compile group: 'log4j', name: 'log4j', version:'1.2.12'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version:'4.1.2'
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version:'1.6.1'
+    compile group: 'junit', name: 'junit', version:'4.11'
+    compile group: 'com.google.collections', name: 'google-collections', version:'1.0'
+    compile group: 'org.mockito', name: 'mockito-all', version:'1.8.4'
+    compile group: 'org.easytesting', name: 'fest-assert-core', version:'2.0M10'
+    compile group: 'com.intellij', name: 'annotations', version:'12.0'
+    compile group: 'org.codehaus.jackson', name: 'jackson-core-asl', version:'1.9.13'
+    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version:'1.9.13'
+}
+
+shadowJar {
+    mergeServiceFiles{
+        include 'META-INF/spring.*'
+    }
+    manifest {
+        attributes 'Built-Date': (new SimpleDateFormat("yyyy/MM/dd")).format(new Date()) //today's date
+        attributes 'Built-By': System.getProperty('user.name')
+        attributes 'Build-Jdk': System.getProperty('java.version')
+        attributes 'Implementation-Title': project.name
+        attributes 'Implementation-Version': project.version
+        attributes 'Implementation-Vendor-Id': project.group
+    }
+}.dependsOn test
+
+task syncToLib(type: Sync) {
+    into "libs"
+    from configurations.runtime
+}
+
+task deploy {
+  dependsOn uploadArchives
+}
+sourceSets {
+    main.java.srcDirs += 'src'
+}

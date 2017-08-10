@@ -7,3 +7,5 @@ target/*
 *.properties
 tutorials/*
 settings/
+build/
+.gradle
