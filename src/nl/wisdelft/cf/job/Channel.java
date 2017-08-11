@@ -1,8 +1,11 @@
 package nl.wisdelft.cf.job;
 
-import com.google.common.collect.*;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -18,9 +21,7 @@ public class Channel {
 
     public Channel(String jobID)
     {
-        this(jobID,
-             Sets.<String>newHashSet(),
-             Sets.<String>newHashSet());
+        this(jobID, new HashSet<>(), new HashSet<>());
     }
 
     Channel(String aJobId, Set<String> aAvailableChannels, Set<String> aEnabledChannels)

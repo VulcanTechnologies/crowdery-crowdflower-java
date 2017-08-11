@@ -1,27 +1,28 @@
 package nl.wisdelft.cf;
 
-import nl.wisdelft.cf.weblayer.*;
-import org.json.*;
-import org.slf4j.*;
+import nl.wisdelft.cf.weblayer.WebUtil;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.net.*;
-import java.util.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.Map;
 
 public class Account {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Account.class);
+    private static final String URL = "https://api.crowdflower.com/v1/account.json";
 
     private Map<String, String> theAccountDetails;
-    private static final String URL = "https://api.crowdflower.com/v1/account.json";
     private String theApiKey;
-    private Logger logger = LoggerFactory.getLogger(Account.class);
-    private final WebUtil theWebUtil;
 
     public Account(String aApiKey,
-                   Map<String,String> aAccountDetails,
-                   CrowdFlowerFactory aCrowdFlowerFactory)
+                   Map<String,String> aAccountDetails)
     {
         theApiKey = aApiKey;
         theAccountDetails = aAccountDetails;
-        theWebUtil = aCrowdFlowerFactory.createWebUtil();
     }
 
     public void refresh()
@@ -31,11 +32,11 @@ public class Account {
         Iterator iterate;
         try
         {
-            wGet = theWebUtil.urlReader(new URL(URL + "?key=" + theApiKey));
+            wGet = WebUtil.urlReader(new URL(URL + "?key=" + theApiKey));
             json = new JSONObject(wGet);
             iterate = json.keys();
 
-            logger.info("Adding account attributes");
+            LOGGER.info("Adding account attributes");
 
             while (iterate.hasNext())
             {
@@ -47,11 +48,11 @@ public class Account {
         }
         catch (MalformedURLException e)
         {
-            logger.error(e.toString());
+            LOGGER.error(e.toString());
         }
         catch (JSONException e)
         {
-            logger.error(e.toString());
+            LOGGER.error(e.toString());
         }
 
     }

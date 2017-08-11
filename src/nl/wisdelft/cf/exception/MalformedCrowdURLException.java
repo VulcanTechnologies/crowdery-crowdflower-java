@@ -1,6 +1,6 @@
 package nl.wisdelft.cf.exception;
 
-import java.net.*;
+import java.net.MalformedURLException;
 
 public class MalformedCrowdURLException extends MalformedURLException {
 

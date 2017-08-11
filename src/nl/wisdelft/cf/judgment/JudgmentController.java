@@ -1,8 +1,8 @@
 package nl.wisdelft.cf.judgment;
 
-import nl.wisdelft.cf.datamodel.*;
+import nl.wisdelft.cf.datamodel.Judgment;
 
-import java.util.*;
+import java.util.Map;
 
 public interface JudgmentController {
 

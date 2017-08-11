@@ -1,16 +1,21 @@
 package nl.wisdelft.cf.datamodel;
 
-import com.google.common.collect.*;
-import nl.wisdelft.cf.job.*;
-import org.json.*;
-import org.slf4j.*;
+import nl.wisdelft.cf.job.JobAttribute;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Objects;
 
 public class Job {
-    private String id;
     private static final Logger LOGGER = LoggerFactory.getLogger(Job.class);
-    private Map<String,String> theAttributes;
+
+    private String id = "";
+    private Map<String,String> theAttributes = new HashMap<>();
 
     public Job(
             final String aId,
@@ -22,14 +27,10 @@ public class Job {
 
     public Job()
     {
-        id = "";
-        theAttributes = Maps.newHashMap();
     }
 
     public Job(final JSONObject aJson)
     {
-        id = "";
-        theAttributes = Maps.newHashMap();
         jsonIterate(aJson);
     }
 
@@ -44,8 +45,8 @@ public class Job {
     }
 
     /*
-To be replaced with jackson later
- */
+    To be replaced with jackson later
+    */
     @SuppressWarnings("rawtypes")
     private void jsonIterate(JSONObject json)
     {
@@ -121,10 +122,10 @@ To be replaced with jackson later
     @Override
     public boolean equals(final Object o)
     {
-        return Objects.equals(id,
+        return Objects.equals(getClass(),
+                o.getClass()) &&
+               Objects.equals(id,
                               ((Job) o).getId()) &&
-               Objects.equals(getClass(),
-                              o.getClass()) &&
                Objects.equals(theAttributes,
                               ((Job) o).getAttributes());
     }

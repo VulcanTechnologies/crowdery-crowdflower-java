@@ -1,50 +1,32 @@
 package nl.wisdelft.cf;
 
-import com.google.common.collect.*;
-import nl.wisdelft.cf.datamodel.*;
-import nl.wisdelft.cf.job.*;
-import nl.wisdelft.cf.order.*;
-import nl.wisdelft.cf.unit.*;
-import org.json.*;
-import org.slf4j.*;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import nl.wisdelft.cf.datamodel.Job;
+import nl.wisdelft.cf.job.JobController;
+import nl.wisdelft.cf.job.JobControllerImpl;
+import nl.wisdelft.cf.unit.UnitController;
+import nl.wisdelft.cf.unit.UnitControllerImpl;
+import nl.wisdelft.cf.weblayer.WebJobsCall;
+import nl.wisdelft.cf.weblayer.WebUtil;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.util.*;
+import java.util.List;
+import java.util.Properties;
 
 public class CrowdFlowerImpl implements CrowdFlower {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CrowdFlowerImpl.class);
+    private final static String URL = "https://api.crowdflower.com/v1/";
 
     /**
      * BuilderJobs fetches the list of Jobs in -Your Jobs-
      */
 
-    private List<JobController> theJobControllerList;
-    private static String API_KEY;
-    private final static String URL = "https://api.crowdflower.com/v1/";
-    private Logger logger = LoggerFactory.getLogger(CrowdFlowerImpl.class);
-    private CrowdFlowerFactory theCrowdFlowerFactory = new CrowdFlowerFactory();
-
-    /**
-     *
-     * When we do not specify any parameter in the constructor,
-     * It takes default properties file
-     *
-     */
-
-    public CrowdFlowerImpl()
-    {
-        theJobControllerList = Lists.newArrayList();
-        Properties myProperties = new Properties();
-        try
-        {
-            myProperties.load(new FileInputStream("default.properties"));
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        API_KEY = myProperties.getProperty("apiKey");
-
-    }
+    private final String API_KEY;
 
     /**
      * This constructor consumes a Path to the properties file
@@ -55,7 +37,6 @@ public class CrowdFlowerImpl implements CrowdFlower {
 
     public CrowdFlowerImpl(Properties aPropertiesPath)
     {
-        theJobControllerList = Lists.newArrayList();
         API_KEY = aPropertiesPath.getProperty("apiKey");
     }
 
@@ -68,7 +49,6 @@ public class CrowdFlowerImpl implements CrowdFlower {
      */
     public CrowdFlowerImpl(String aAPIKey)
     {
-        theJobControllerList = Lists.newArrayList();
         API_KEY = aAPIKey;
     }
 
@@ -85,16 +65,14 @@ public class CrowdFlowerImpl implements CrowdFlower {
             List<Job> myJobs = Lists.newArrayList();
 
             // Augment the URL
-            String augUrl = theCrowdFlowerFactory.createWebUtil()
-                                                 .urlTransform(URL,"jobs.json?key=" + API_KEY);
+            String augUrl = WebUtil.urlTransform(URL,"jobs.json?key=" + API_KEY);
 
-            logger.debug("Web call @ URL - " + augUrl);
+            LOGGER.debug("Web call @ URL - " + augUrl);
 
             // Fetch the array of all the jobs
-            JSONArray jsonArray = theCrowdFlowerFactory.createWebJobsCall()
-                                                       .getJobs(augUrl);
+            JSONArray jsonArray = WebJobsCall.getJobs(augUrl);
 
-            logger.info("Creating list of Jobs");
+            LOGGER.info("Creating list of Jobs");
 
 
             for (int i = 0; i < jsonArray.length(); i++)
@@ -103,7 +81,7 @@ public class CrowdFlowerImpl implements CrowdFlower {
 
                 myJobs.add(new Job(json));
 
-                logger.info("{} Job added ",i);
+                LOGGER.info("{} Job added ",i);
             }
 
             return myJobs;
@@ -111,7 +89,7 @@ public class CrowdFlowerImpl implements CrowdFlower {
         }
         catch (JSONException e)
         {
-            logger.error(e.toString());
+            LOGGER.error(e.toString());
         }
         return null;
     }
@@ -129,12 +107,6 @@ public class CrowdFlowerImpl implements CrowdFlower {
     }
 
     @Override
-    public OrderController getOrderController()
-    {
-        return new OrderControllerImpl(API_KEY);
-    }
-
-    @Override
     public UnitController getUnitController()
     {
         return new UnitControllerImpl(API_KEY);
@@ -143,10 +115,7 @@ public class CrowdFlowerImpl implements CrowdFlower {
     @Override
     public Account getAccount()
     {
-
-        Account myAccount = new Account(API_KEY,
-                                        Maps.<String, String>newHashMap(),
-                                        theCrowdFlowerFactory);
+        Account myAccount = new Account(API_KEY, Maps.<String, String>newHashMap());
         myAccount.refresh();
         return myAccount;
     }

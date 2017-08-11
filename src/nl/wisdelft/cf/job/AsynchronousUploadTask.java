@@ -1,7 +1,7 @@
 package nl.wisdelft.cf.job;
 
-import nl.wisdelft.cf.datamodel.*;
-import nl.wisdelft.cf.exception.*;
+import nl.wisdelft.cf.datamodel.Job;
+import nl.wisdelft.cf.exception.NullAPIKeyException;
 
 class AsynchronousUploadTask implements Runnable {
     private JobController theJobController;

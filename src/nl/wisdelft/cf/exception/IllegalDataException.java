@@ -1,6 +1,6 @@
 package nl.wisdelft.cf.exception;
 
-import org.json.*;
+import org.json.JSONException;
 
 public class IllegalDataException extends JSONException {
 

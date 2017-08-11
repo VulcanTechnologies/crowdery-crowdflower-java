@@ -1,23 +1,23 @@
 package nl.wisdelft.cf;
 
-import com.google.common.collect.*;
-import nl.wisdelft.cf.job.*;
-import nl.wisdelft.cf.order.*;
-import nl.wisdelft.cf.unit.*;
-import nl.wisdelft.cf.weblayer.*;
-import org.apache.http.*;
-import org.json.*;
+import com.google.common.collect.Lists;
+import nl.wisdelft.cf.job.JobController;
+import nl.wisdelft.cf.unit.UnitController;
+import org.apache.http.NameValuePair;
+import org.json.JSONObject;
 
-import java.io.*;
-import java.util.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.Properties;
 
 public class CrowdFlowerFactory {
 
-    private static CrowdFlower theCrowdFlower = new CrowdFlowerImpl();
+    private static CrowdFlower theCrowdFlower;
 
-    public CrowdFlowerFactory()
-    {
-        //ignore
+    public static CrowdFlower initialize(String apiKey) {
+        theCrowdFlower = new CrowdFlowerImpl(apiKey);
+        return theCrowdFlower;
     }
 
     public static void setProperties(String aPath)
@@ -44,21 +44,6 @@ public class CrowdFlowerFactory {
         return theCrowdFlower.getJobController();
     }
 
-    public static OrderController getOrderController()
-    {
-        return theCrowdFlower.getOrderController();
-    }
-
-    public WebCall createWebCall()
-    {
-        return new WebCall(createWebUtil());
-    }
-
-    public WebUtil createWebUtil()
-    {
-        return new WebUtil();
-    }
-
     public List<NameValuePair> createAttributes()
     {
         return Lists.newArrayList();
@@ -67,15 +52,5 @@ public class CrowdFlowerFactory {
     public JSONObject createValues()
     {
         return new JSONObject();
-    }
-
-    public WebJobCall createWebJobCall()
-    {
-        return new WebJobCall(createWebUtil());
-    }
-
-    public WebJobsCall createWebJobsCall()
-    {
-        return new WebJobsCall(createWebUtil());
     }
 }

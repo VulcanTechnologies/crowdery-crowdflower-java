@@ -1,18 +1,22 @@
 package nl.wisdelft.cf.weblayer;
 
-import org.json.*;
 
-import java.io.*;
-import java.net.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class WebJobsCall extends WebCall {
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebJobsCall.class);
 
-    public WebJobsCall(final WebUtil aWebUtil)
-    {
-        super(aWebUtil);
-    }
-
-    public JSONArray getJobs(String URL)
+    public static JSONArray getJobs(String URL)
     {
         JSONArray json = null;
         URL crowdFlower;
@@ -34,17 +38,17 @@ public class WebJobsCall extends WebCall {
             json = new JSONArray(jsonInput);
 
         }
-        catch (MalformedURLException e1)
+        catch (MalformedURLException e)
         {
-            e1.printStackTrace();
+            LOGGER.error(e.toString());
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            LOGGER.error(e.toString());
         }
         catch (JSONException e)
         {
-            e.printStackTrace();
+            LOGGER.error(e.toString());
         }
 
         return json;

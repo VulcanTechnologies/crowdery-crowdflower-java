@@ -1,36 +1,34 @@
 package nl.wisdelft.cf.weblayer;
 
-import nl.wisdelft.cf.exception.*;
-import org.apache.http.*;
-import org.apache.http.client.*;
-import org.apache.http.client.entity.*;
-import org.apache.http.client.methods.*;
-import org.apache.http.entity.*;
-import org.apache.http.impl.client.*;
-import org.json.*;
-import org.slf4j.*;
+import nl.wisdelft.cf.exception.CrowdFlowerException;
+import nl.wisdelft.cf.exception.MalformedCrowdURLException;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.FileEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.net.MalformedURLException;
+import java.util.List;
 
+/**
+ * This layer translates the cURL call of CrowdFlower to HttpClient 4.x
+ * calls, And provides Object Relationship Mapping between JSON object and
+ * JCrowdFlower's Java object
+ *
+ * @author debarshi
+ */
 public class WebJobCall extends WebCall {
-
-    /**
-     * This layer translates the cURL call of CrowdFlower to HttpClient 4.x
-     * calls, And provides Object Relationship Mapping between JSON object and
-     * JCrowdFlower's Java object
-     *
-     * @author debarshi
-     */
-
-    private static Logger logger = LoggerFactory.getLogger(WebJobCall.class);
-
-    public WebJobCall(final WebUtil aWebUtil)
-    {
-        super(aWebUtil);
-    }
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebJobCall.class);
 
     /**
      * Opens an inputstream and reads the url GET
@@ -40,29 +38,27 @@ public class WebJobCall extends WebCall {
      * @throws MalformedCrowdURLException
      */
 
-    public  JSONObject getJob(String URL) throws MalformedCrowdURLException
+    public static JSONObject getJob(String URL) throws MalformedCrowdURLException
     {
         JSONObject json = null;
         URL crowdFlower;
-
 
         try
         {
             crowdFlower = new URL(URL);
 
-            json = new JSONObject(theWebUtil.urlReader(crowdFlower));
+            json = new JSONObject(WebUtil.urlReader(crowdFlower));
 
             return json;
 
         }
         catch (MalformedURLException e1)
         {
-
             throw new MalformedCrowdURLException(URL);
         }
         catch (JSONException e)
         {
-            e.printStackTrace();
+            LOGGER.error(e.toString());
         }
 
         return json;
@@ -77,7 +73,7 @@ public class WebJobCall extends WebCall {
      * @return
      */
 
-    public  String createJob(
+    public static String createJob(
             String URL,
             List<NameValuePair> attributes)
     {
@@ -94,7 +90,7 @@ public class WebJobCall extends WebCall {
      * @param type
      */
     @SuppressWarnings("deprecation")
-    public  void upload(
+    public static void upload(
             String absolutePath,
             String URL,
             String type)
@@ -108,7 +104,7 @@ public class WebJobCall extends WebCall {
             post.setEntity(new FileEntity(new File(absolutePath),
                                           type));
 
-            logger.info("HTTP POST @ url - " + URL);
+            LOGGER.info("HTTP POST @ url - " + URL);
 
             HttpResponse response = httpClient.execute(post);
 
@@ -121,16 +117,15 @@ public class WebJobCall extends WebCall {
 			 * of upload from the server
 			 * 
 			 */
-            System.out.println(response.getEntity());
-
+			LOGGER.info("Response: {}", response.getEntity());
         }
         catch (MalformedURLException e)
         {
-            e.printStackTrace();
+            LOGGER.error(e.toString());
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            LOGGER.error(e.toString());
         }
 
     }
@@ -141,7 +136,7 @@ public class WebJobCall extends WebCall {
      * @param URL
      * @param attributes
      */
-    public  void uploadURI(
+    public static void uploadURI(
             String URL,
             List<NameValuePair> attributes)
     {
@@ -154,24 +149,24 @@ public class WebJobCall extends WebCall {
             HttpPost post = new HttpPost(URL);
             post.setEntity(new UrlEncodedFormEntity(attributes));
 
-            logger.info("HTTP POST @ url - " + URL);
+            LOGGER.info("HTTP POST @ url - " + URL);
 
-            output = theWebUtil.readResponse(httpClient.execute(post));
+            output = WebUtil.readResponse(httpClient.execute(post));
 
-            theWebUtil.trapException(output);
+            WebUtil.trapException(output);
 
         }
         catch (MalformedURLException e)
         {
-            e.printStackTrace();
+            LOGGER.error(e.toString());
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            LOGGER.error(e.toString());
         }
         catch (CrowdFlowerException e)
         {
-            e.printStackTrace();
+            LOGGER.error(e.toString());
         }
 
     }
@@ -179,7 +174,7 @@ public class WebJobCall extends WebCall {
 
     // TODO Read the HttpResponse and throw appropriate exception
 
-    public  JSONObject getUnits(String url)
+    public static JSONObject getUnits(String url)
     {
         JSONObject json = null;
         URL crowdFlower;
@@ -187,19 +182,17 @@ public class WebJobCall extends WebCall {
         {
             crowdFlower = new URL(url);
 
-            json = new JSONObject(theWebUtil.urlReader(crowdFlower));
-
-            return json;
-
+            json = new JSONObject(WebUtil.urlReader(crowdFlower));
         }
         catch (JSONException e)
         {
-            e.printStackTrace();
+            LOGGER.error(e.toString());
         }
-        catch (MalformedURLException e1)
+        catch (MalformedURLException e)
         {
-            e1.printStackTrace();
+            LOGGER.error(e.toString());
         }
+
         return json;
     }
 }

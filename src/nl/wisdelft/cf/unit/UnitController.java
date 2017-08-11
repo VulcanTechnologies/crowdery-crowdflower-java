@@ -1,6 +1,6 @@
 package nl.wisdelft.cf.unit;
 
-import nl.wisdelft.cf.datamodel.*;
+import nl.wisdelft.cf.datamodel.Unit;
 
 public interface UnitController {
 

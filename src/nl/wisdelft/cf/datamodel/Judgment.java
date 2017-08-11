@@ -1,40 +1,35 @@
 package nl.wisdelft.cf.datamodel;
 
-import com.google.common.collect.*;
-import nl.wisdelft.cf.judgment.*;
-import org.apache.http.*;
-import org.json.*;
-import org.slf4j.*;
+import nl.wisdelft.cf.judgment.JudgAttribute;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class Judgment {
 
     private String id = "";
     private String theJobId = "";
-    private Map<String,String> attributes;
+    private Map<String,String> attributes = new HashMap<>();
     private static final Logger LOGGER = LoggerFactory.getLogger(Judgment.class);
 
-    public Judgment()
-    {
-        id = "";
-        theJobId = "";
-        attributes = Maps.newHashMap();
+    public Judgment() {
+        this("", "");
     }
 
     public Judgment(final JSONObject aRawJudgment)
     {
-        id = "";
-        theJobId = "";
-        attributes = Maps.newHashMap();
         jsonIterate(aRawJudgment);
     }
 
-    public Judgment(String aId, String aJobId, Set<NameValuePair> aAttributes)
+    public Judgment(String aId, String aJobId)
     {
         id = aId;
         theJobId = aJobId;
-        attributes = Maps.newHashMap();
     }
 
     public void addProperty(
@@ -89,15 +84,14 @@ public class Judgment {
 
     private void jsonIterate(JSONObject json)
     {
-
-        Iterator iterate;
         try
         {
-            iterate = json.keys();
+            Iterator iterate = json.keys();
 
             while (iterate.hasNext())
             {
-                extractPropertyAndAddAsAttribute(json, iterate);
+                String key = (String) iterate.next();
+                addProperty(key, json.get(key).toString());
             }
         }
         catch (JSONException e)
@@ -105,13 +99,6 @@ public class Judgment {
             LOGGER.error("Cannot parse the incoming job details : ",
                          e);
         }
-    }
-
-    private void extractPropertyAndAddAsAttribute(final JSONObject json, final Iterator aIterate) throws JSONException
-    {
-        String key = (String) aIterate.next();
-        addProperty(key,
-                    json.get(key).toString());
     }
 
 }

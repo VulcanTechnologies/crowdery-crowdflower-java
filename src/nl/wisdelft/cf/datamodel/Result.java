@@ -1,11 +1,13 @@
 package nl.wisdelft.cf.datamodel;
 
-import org.json.*;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Result {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Result.class);
 
-    private JSONObject json;
-    private JSONObject text;
     private String judgments = "";
     private String agg = "";
     private String confidence = "";
@@ -14,16 +16,16 @@ public class Result {
     {
         try
         {
-            json = new JSONObject(result);
+            JSONObject json = new JSONObject(result);
+            JSONObject text = new JSONObject(json.get("text").toString());
             judgments = json.get("judgments").toString();
-            text = new JSONObject(json.get("text").toString());
             agg = text.get("agg").toString();
             confidence = text.get("confidence").toString();
-
         }
         catch (JSONException e)
         {
-            e.printStackTrace();
+            LOGGER.error("Cannot parse the incoming result details : ",
+                    e);
         }
     }
 

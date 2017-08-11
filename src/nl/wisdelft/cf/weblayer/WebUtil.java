@@ -1,18 +1,29 @@
 package nl.wisdelft.cf.weblayer;
 
-import com.google.common.collect.*;
-import nl.wisdelft.cf.exception.*;
-import org.apache.http.*;
-import org.apache.http.message.*;
-import org.json.*;
+import com.google.common.collect.Lists;
+import nl.wisdelft.cf.exception.CrowdFlowerException;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.List;
+import java.util.Map;
 
 public class WebUtil {
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebJobsCall.class);
 
-    public String urlReader(URL crowdFlower)
+    public static String urlReader(URL crowdFlower)
     {
         String jsonInput = "";
 
@@ -35,17 +46,17 @@ public class WebUtil {
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            LOGGER.error(e.toString());
         }
         catch (CrowdFlowerException e)
         {
-            e.printStackTrace();
+            LOGGER.error(e.toString());
         }
 
         return jsonInput;
     }
 
-    public void trapException(String output) throws CrowdFlowerException
+    public static void trapException(String output) throws CrowdFlowerException
     {
 
         try
@@ -60,11 +71,11 @@ public class WebUtil {
         }
         catch (JSONException e)
         {
-            //ignore
+            LOGGER.error(e.toString());
         }
     }
 
-    public void trapException(int output) throws CrowdFlowerException
+    public static void trapException(int output) throws CrowdFlowerException
     {
         if ((output != 200) && (output != 202))
         {
@@ -72,7 +83,7 @@ public class WebUtil {
         }
     }
 
-    public String urlTransform(
+    public static String urlTransform(
             String baseurl,
             Map<String, String> param)
     {
@@ -83,18 +94,17 @@ public class WebUtil {
             url = url + "&" + key + "=" + param.get(key);
         }
 
-        System.out.println(url);
         return url;
     }
 
-    public String urlTransform(
+    public static String urlTransform(
             String baseurl,
             String morph)
     {
         return String.format("%s%s", baseurl, morph);
     }
 
-    public String readResponse(HttpResponse response)
+    public static String readResponse(HttpResponse response)
     {
         String output = "";
 
@@ -122,11 +132,11 @@ public class WebUtil {
         }
         catch (IllegalStateException e)
         {
-            e.printStackTrace();
+            LOGGER.error(e.toString());
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            LOGGER.error(e.toString());
         }
 
         return output;

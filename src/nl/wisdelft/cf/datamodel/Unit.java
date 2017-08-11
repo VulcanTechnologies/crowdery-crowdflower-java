@@ -1,33 +1,26 @@
 package nl.wisdelft.cf.datamodel;
 
-import com.google.common.collect.*;
+import nl.wisdelft.cf.unit.UnitAttribute;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import nl.wisdelft.cf.unit.*;
-
-import org.json.*;
-import org.slf4j.*;
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class Unit {
-
-    private String theUnitId;
-    private String theJobId;
-    private Map<String,String> theAttributes;
     private static final Logger LOGGER = LoggerFactory.getLogger(Unit.class);
 
-    public Unit()
-    {
-        theUnitId = "";
-        theJobId = "";
-        theAttributes = Maps.newHashMap();
+    private String theUnitId = "";
+    private String theJobId = "";
+    private Map<String,String> theAttributes = new HashMap<>();
+
+    public Unit() {
     }
 
-    public Unit(final JSONObject aMeta)
-    {
-        theUnitId = "";
-        theJobId = "";
-        theAttributes = Maps.newHashMap();
+    public Unit(final JSONObject aMeta) {
         parse(aMeta);
     }
 
@@ -101,7 +94,8 @@ public class Unit {
         }
         catch (JSONException e)
         {
-            e.printStackTrace();
+            LOGGER.error("Cannot parse the incoming unit details : ",
+                    e);
         }
     }
 }

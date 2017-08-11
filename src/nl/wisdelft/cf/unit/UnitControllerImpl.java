@@ -1,16 +1,20 @@
 package nl.wisdelft.cf.unit;
 
-import nl.wisdelft.cf.*;
-import nl.wisdelft.cf.datamodel.*;
-import nl.wisdelft.cf.exception.*;
-import nl.wisdelft.cf.weblayer.*;
-import org.apache.http.*;
-import org.apache.http.message.*;
-import org.fest.util.*;
-import org.json.*;
-import org.slf4j.*;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Lists;
+import nl.wisdelft.cf.datamodel.Unit;
+import nl.wisdelft.cf.exception.MalformedCrowdURLException;
+import nl.wisdelft.cf.weblayer.WebCall;
+import nl.wisdelft.cf.weblayer.WebUtil;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
 
 import static nl.wisdelft.cf.weblayer.WebUtil.convertAttributesToNameValuePair;
 
@@ -19,25 +23,13 @@ public class UnitControllerImpl implements UnitController {
 
     private final static String URL = "https://api.crowdflower.com/v1/jobs";
     private final String theApiKey;
-    private final WebUtil theWebUtil;
-    private WebCall theWebCall;
 
     private final Logger logger = LoggerFactory.getLogger(UnitControllerImpl.class);
 
-    public UnitControllerImpl(
-            String apiKey)
-    {
-        this(apiKey, new CrowdFlowerFactory());
-    }
-
-    @VisibleForTesting UnitControllerImpl(
-            String apiKey,
-            CrowdFlowerFactory
-                    aCrowdFlowerFactory)
+    @VisibleForTesting
+    public UnitControllerImpl(String apiKey)
     {
         theApiKey = apiKey;
-        theWebUtil = aCrowdFlowerFactory.createWebUtil();
-        theWebCall = aCrowdFlowerFactory.createWebCall();
     }
 
     /**
@@ -50,11 +42,11 @@ public class UnitControllerImpl implements UnitController {
         {
             logger.info("Refreshing the units for job with id  - {}", aJobId);
 
-            String url = theWebUtil.urlTransform(URL,
+            String url = WebUtil.urlTransform(URL,
                                                  "/" + aJobId + "/units/"
                                                  + aUnitId + ".json?key=" + theApiKey);
 
-            return new Unit(theWebCall.getMeta(url));
+            return new Unit(WebCall.getMeta(url));
         }
         catch (MalformedCrowdURLException e)
         {
@@ -73,7 +65,7 @@ public class UnitControllerImpl implements UnitController {
             if (!theApiKey.isEmpty())
             {
                 logger.info("Creating units for job with id  - " + aUnit.getJobId());
-                return new Unit(new JSONObject(theWebCall.create(augURL,
+                return new Unit(new JSONObject(WebCall.create(augURL,
                                                                  convertAttributesToNameValuePair(aUnit.getAttributes()))));
             }
         }
@@ -93,7 +85,7 @@ public class UnitControllerImpl implements UnitController {
         {
             String augURL = URL + "/" + aUnit.getJobId() + "/" + "units/" + aUnit.getUnitId() + ".json?key=" + theApiKey;
             logger.info("Updating unit - " + aUnit.getUnitId());
-            theWebCall.update(augURL, myAttributes);
+            WebCall.update(augURL, myAttributes);
         }
     }
 
@@ -101,8 +93,8 @@ public class UnitControllerImpl implements UnitController {
     public void delete(String aJobId, String aUnitId)
     {
         logger.info("Deleting unit - " + aUnitId);
-        String myURL = theWebUtil.urlTransform(URL, "/" + aJobId + "/" + aUnitId + ".json?key=" + theApiKey);
-        theWebCall.delete(myURL);
+        String myURL = WebUtil.urlTransform(URL, "/" + aJobId + "/" + aUnitId + ".json?key=" + theApiKey);
+        WebCall.delete(myURL);
     }
 
     @Override
@@ -112,7 +104,7 @@ public class UnitControllerImpl implements UnitController {
             String value,
             String reason)
     {
-        String url = theWebUtil.urlTransform(URL,
+        String url = WebUtil.urlTransform(URL,
                                              "/" + aUnit.getJobId() + "/units/" + aUnit.getUnitId()
                                              + ".json?key=" + theApiKey);
         try
@@ -138,7 +130,7 @@ public class UnitControllerImpl implements UnitController {
             myAttributes.add(new BasicNameValuePair("unit[data][" + legend
                                                     + "_gold_reason][]",
                                                     reason));
-            theWebCall.update(url,
+            WebCall.update(url,
                               myAttributes);
         }
         catch (JSONException e)
@@ -151,14 +143,14 @@ public class UnitControllerImpl implements UnitController {
     @Override
     public void removeGold(String aJobId, String aUnitId)
     {
-        String url = theWebUtil.urlTransform(URL,
+        String url = WebUtil.urlTransform(URL,
                                              "/" + aJobId + "/units/" + aUnitId
                                              + ".json?key=" + theApiKey);
         List<NameValuePair> myAttributes = Lists.newArrayList();
 
         myAttributes.add(new BasicNameValuePair("unit[golden]",
                                                 "false"));
-        theWebCall.update(url,
+        WebCall.update(url,
                           myAttributes);
     }
 

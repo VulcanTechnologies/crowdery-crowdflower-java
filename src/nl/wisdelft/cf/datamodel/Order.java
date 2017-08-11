@@ -1,26 +1,19 @@
 package nl.wisdelft.cf.datamodel;
 
-import com.google.common.collect.*;
-import org.apache.http.message.*;
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Order {
-
     private String theJobId;
-
     private Map<String, String> theAttributes;
 
-    public Order()
-    {
-        theJobId = "";
-        theAttributes = Maps.newHashMap();
+    public Order() {
+        this("", new HashMap<>());
     }
 
     public Order(String aJobId)
     {
-        theJobId = aJobId;
-        theAttributes = Maps.newHashMap();
+        this(aJobId, new HashMap<>());
     }
 
     public Order(String aJobId, Map<String, String> aAttributes)

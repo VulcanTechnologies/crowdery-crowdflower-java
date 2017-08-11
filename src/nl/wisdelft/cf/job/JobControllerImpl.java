@@ -1,21 +1,34 @@
 package nl.wisdelft.cf.job;
 
-import nl.wisdelft.cf.*;
-import nl.wisdelft.cf.datamodel.*;
-import nl.wisdelft.cf.exception.*;
-import nl.wisdelft.cf.judgment.*;
-import nl.wisdelft.cf.order.*;
-import nl.wisdelft.cf.unit.*;
-import nl.wisdelft.cf.weblayer.*;
-import org.apache.http.*;
-import org.apache.http.message.*;
-import org.fest.util.*;
-import org.json.*;
-import org.slf4j.*;
+import com.google.common.collect.Lists;
+import nl.wisdelft.cf.datamodel.Job;
+import nl.wisdelft.cf.datamodel.Judgment;
+import nl.wisdelft.cf.datamodel.Order;
+import nl.wisdelft.cf.datamodel.Unit;
+import nl.wisdelft.cf.exception.MalformedCrowdURLException;
+import nl.wisdelft.cf.exception.NullAPIKeyException;
+import nl.wisdelft.cf.judgment.JudgmentController;
+import nl.wisdelft.cf.judgment.JudgmentControllerImpl;
+import nl.wisdelft.cf.unit.UnitController;
+import nl.wisdelft.cf.unit.UnitControllerImpl;
+import nl.wisdelft.cf.weblayer.WebCall;
+import nl.wisdelft.cf.weblayer.WebJobCall;
+import nl.wisdelft.cf.weblayer.WebUtil;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static nl.wisdelft.cf.weblayer.WebUtil.convertAttributesToNameValuePair;
 
@@ -35,8 +48,6 @@ public class JobControllerImpl implements JobController {
     private static final String URL = "https://api.crowdflower.com/v1/jobs";
     private String apiKey;
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
-    private WebUtil theWebUtil;
-    private WebJobCall theWebJobCall;
 
     /**
      * This constructor takes only the apiKey
@@ -45,17 +56,7 @@ public class JobControllerImpl implements JobController {
      */
     public JobControllerImpl(String apiKey)
     {
-        this(apiKey,
-             new CrowdFlowerFactory());
-    }
-
-    @VisibleForTesting JobControllerImpl(
-            String aApiKey,
-            CrowdFlowerFactory aCrowdFlowerFactory)
-    {
-        apiKey = aApiKey;
-        theWebUtil = aCrowdFlowerFactory.createWebUtil();
-        theWebJobCall = aCrowdFlowerFactory.createWebJobCall();
+        this.apiKey = apiKey;
     }
 
     /**
@@ -81,9 +82,9 @@ public class JobControllerImpl implements JobController {
             LOGGER.info("Create the job with id  - {} ",
                         aJob.getId());
 
-            String augURL = theWebUtil.urlTransform(URL,
+            String augURL = WebUtil.urlTransform(URL,
                                                     ".json?key=" + apiKey);
-            json = new JSONObject(theWebJobCall.createJob(augURL, convertAttributesToNameValuePair(aJob.getAttributes())));
+            json = new JSONObject(WebJobCall.createJob(augURL, convertAttributesToNameValuePair(aJob.getAttributes())));
         }
         catch (JSONException e)
         {
@@ -105,7 +106,7 @@ public class JobControllerImpl implements JobController {
         {
             LOGGER.info("Reading job with id  - {}",
                         aJobId);
-            String augURL = theWebUtil.urlTransform(URL,
+            String augURL = WebUtil.urlTransform(URL,
                                                     "/" + aJobId + ".json?key="
                                                     + apiKey);
 
@@ -114,7 +115,7 @@ public class JobControllerImpl implements JobController {
             {
                 if (!augURL.isEmpty())
                 {
-                    return new Job(theWebJobCall.getJob(augURL));
+                    return new Job(WebJobCall.getJob(augURL));
                 }
             }
             else
@@ -129,10 +130,6 @@ public class JobControllerImpl implements JobController {
 
         return null;
     }
-
-    /**
-     * Add the property and its corresponding value to the attribute list
-     */
 
 
     /**
@@ -151,7 +148,7 @@ public class JobControllerImpl implements JobController {
         if (!apiKey.isEmpty())
         {
 
-            String augURL = theWebUtil.urlTransform(URL,
+            String augURL = WebUtil.urlTransform(URL,
                                                     "/" + aJob.getId()
                                                     + "/upload.json?key=" + apiKey);
 
@@ -159,7 +156,7 @@ public class JobControllerImpl implements JobController {
                         aJob.getId(),
                         absolutePath);
 
-            theWebJobCall.upload(absolutePath,
+            WebJobCall.upload(absolutePath,
                                  augURL,
                                  contentType);
         }
@@ -180,14 +177,14 @@ public class JobControllerImpl implements JobController {
         if (!apiKey.isEmpty())
         {
 
-            String augURL = theWebUtil.urlTransform(URL,
+            String augURL = WebUtil.urlTransform(URL,
                                                     "/" + aJob.getId() + ".json?key="
                                                     + apiKey);
 
             LOGGER.info("Updating the job with id  - {}",
                         aJob.getId());
 
-            theWebJobCall.update(augURL,
+            WebCall.update(augURL,
                                  convertAttributesToNameValuePair(aJob.getAttributes()));
 
         }
@@ -211,14 +208,14 @@ public class JobControllerImpl implements JobController {
 
         // Fetch all the units
         List<Unit> units = Lists.newArrayList();
-        String augURL = theWebUtil.urlTransform(URL,
+        String augURL = WebUtil.urlTransform(URL,
                                                 "/" + aJobId
                                                 + "/units.json?key=" + apiKey);
 
         LOGGER.info("Obtaining units for job with id  - {} ",
                     aJobId);
 
-        JSONObject json = theWebJobCall.getUnits(augURL);
+        JSONObject json = WebJobCall.getUnits(augURL);
 
         Iterator iterate = json.keys();
 
@@ -246,7 +243,7 @@ public class JobControllerImpl implements JobController {
 
         aJob.addProperty("uri",
                          url);
-        String augURL = theWebUtil.urlTransform(URL,
+        String augURL = WebUtil.urlTransform(URL,
                                                 "/" + aJob.getId()
                                                 + "/upload.json?key=" + apiKey);
 
@@ -254,7 +251,7 @@ public class JobControllerImpl implements JobController {
                     url,
                     aJob.getId());
 
-        theWebJobCall.uploadURI(augURL,convertAttributesToNameValuePair(aJob.getAttributes()));
+        WebJobCall.uploadURI(augURL,convertAttributesToNameValuePair(aJob.getAttributes()));
     }
 
     @Override
@@ -264,9 +261,17 @@ public class JobControllerImpl implements JobController {
         LOGGER.info("Obtaining the status of the job with id  - {}",
                     aJobId);
 
-        return theWebJobCall.getUnits(theWebUtil.urlTransform(URL,
+        return WebJobCall.getUnits(WebUtil.urlTransform(URL,
                                                               "/" + aJobId
                                                               + "/units/ping.json?key=" + apiKey));
+    }
+
+    @Override public void order(final Order aOrder)
+    {
+        LOGGER.info("Ordering job with id - {}", aOrder.getJobId());
+        String url = URL + aOrder.getJobId() + "/orders.json?key="+apiKey;
+        String myOrder = WebCall.create(url,
+                convertAttributesToNameValuePair(aOrder.getAttributes()));
     }
 
     @Override
@@ -274,7 +279,7 @@ public class JobControllerImpl implements JobController {
     {
         LOGGER.info("Pausing job with id  - {}",
                     aJobId);
-        theWebJobCall.get(theWebUtil.urlTransform(URL,
+        WebCall.get(WebUtil.urlTransform(URL,
                                                   "/" + aJobId + "/pause.json?key="
                                                   + apiKey));
     }
@@ -283,7 +288,7 @@ public class JobControllerImpl implements JobController {
     public void resume(String aJobId)
     {
         LOGGER.info("Resuming job with id  - " + aJobId);
-        theWebJobCall.get(theWebUtil.urlTransform(URL,
+        WebCall.get(WebUtil.urlTransform(URL,
                                                   "/" + aJobId + "/resume.json?key="
                                                   + apiKey));
     }
@@ -293,7 +298,7 @@ public class JobControllerImpl implements JobController {
     {
 
         LOGGER.info("Cancelling job with id  - " + aJobId);
-        theWebJobCall.get(theWebUtil.urlTransform(URL,
+        WebCall.get(WebUtil.urlTransform(URL,
                                                   "/" + aJobId + "/cancel.json?key="
                                                   + apiKey));
     }
@@ -304,7 +309,7 @@ public class JobControllerImpl implements JobController {
 
         LOGGER.info("Status of job with id  - " + aJobId);
 
-        return theWebJobCall.get(theWebUtil.urlTransform(URL,
+        return WebCall.get(WebUtil.urlTransform(URL,
                                                          "/" + aJobId
                                                          + "/status.json?key=" + apiKey));
     }
@@ -315,7 +320,7 @@ public class JobControllerImpl implements JobController {
 
         LOGGER.info("Deleting job with id  - " + aJobId);
 
-        theWebJobCall.delete(theWebUtil.urlTransform(URL,
+        WebCall.delete(WebUtil.urlTransform(URL,
                                                      "/" + aJobId + ".json?key="
                                                      + apiKey));
 
@@ -328,14 +333,14 @@ public class JobControllerImpl implements JobController {
         try
         {
 
-            String augURL = theWebUtil.urlTransform(URL,
+            String augURL = WebUtil.urlTransform(URL,
                                                     "/" + aJobId
                                                     + "/judgments.json?key=" + apiKey);
 
             LOGGER.info("Getting judgments for job id  - {}",
                         aJobId);
 
-            JSONObject json = new JSONObject(theWebJobCall.get(augURL));
+            JSONObject json = new JSONObject(WebCall.get(augURL));
 
             List<Judgment> judgments = Lists.newArrayList();
 
@@ -353,11 +358,11 @@ public class JobControllerImpl implements JobController {
 
                 for (String jId : judglist)
                 {
-                    String url = theWebUtil.urlTransform(URL,
+                    String url = WebUtil.urlTransform(URL,
                                                          "/" + aJobId
                                                          + "/judgments/" + jId + ".json?key=" + apiKey);
 
-                    JSONObject myRawJudgment = new JSONObject(theWebJobCall.get(url));
+                    JSONObject myRawJudgment = new JSONObject(WebCall.get(url));
 
                     judgments.add(new Judgment(myRawJudgment));
                 }
@@ -386,10 +391,10 @@ public class JobControllerImpl implements JobController {
         LOGGER.info("Bulk splitting job id  - " + aJobId);
 
         System.out.println("Bulk Splitting..");
-        String augURL = theWebUtil.urlTransform(URL,
+        String augURL = WebUtil.urlTransform(URL,
                                                 "/" + aJobId
                                                 + "/units/split?key=" + apiKey + "&on=" + on + "&with=" + with);
-        theWebJobCall.put(augURL);
+        WebCall.put(augURL);
         System.out.println("Done");
 
     }
@@ -399,7 +404,7 @@ public class JobControllerImpl implements JobController {
     {
 
         Channel channel = new Channel(aJobId);
-        String augURL = theWebUtil.urlTransform(URL,
+        String augURL = WebUtil.urlTransform(URL,
                                                 "/" + aJobId + "/channels?key="
                                                 + apiKey);
         List<String> available;
@@ -410,7 +415,7 @@ public class JobControllerImpl implements JobController {
         JSONObject json;
         try
         {
-            json = new JSONObject(theWebJobCall.get(augURL));
+            json = new JSONObject(WebCall.get(augURL));
 
             enabled = addEnabledChannel(json);
 
@@ -474,7 +479,7 @@ public class JobControllerImpl implements JobController {
 
         System.out.println("Setting channel");
         System.out.println(channels);
-        String url = theWebUtil.urlTransform(URL,
+        String url = WebUtil.urlTransform(URL,
                                              "/" + aJobId + "/channels?key="
                                              + apiKey);
 
@@ -488,7 +493,7 @@ public class JobControllerImpl implements JobController {
                                                   channel));
         }
 
-        theWebJobCall.update(url,
+        WebCall.update(url,
                              attributes);
 
     }
@@ -528,12 +533,12 @@ public class JobControllerImpl implements JobController {
 
         LOGGER.info("Upload with parameters for job id  - " + aJobId);
 
-        String augURL = theWebUtil.urlTransform(
-                theWebUtil.urlTransform(URL,
+        String augURL = WebUtil.urlTransform(
+                WebUtil.urlTransform(URL,
                                         "/" + aJobId + "/upload.json?key="
                                         + apiKey),
                 param);
-        theWebJobCall.upload(absolutePath,
+        WebJobCall.upload(absolutePath,
                              augURL,
                              contentType);
     }
@@ -545,12 +550,12 @@ public class JobControllerImpl implements JobController {
 
         LOGGER.info("Fetching Legends of job id  - " + aJobId);
 
-        String url = theWebUtil.urlTransform(URL,
+        String url = WebUtil.urlTransform(URL,
                                              "/" + aJobId + "/legend.json?key=" + apiKey);
 
         try
         {
-            return new JSONObject(theWebJobCall.get(url));
+            return new JSONObject(WebCall.get(url));
 
         }
         catch (JSONException e)
@@ -571,10 +576,10 @@ public class JobControllerImpl implements JobController {
 
         aJob.addProperty("payment_cent",
                          pay);
-        String augURL = theWebUtil.urlTransform(URL,
+        String augURL = WebUtil.urlTransform(URL,
                                                 "/" + aJob.getId() + ".json?key="
                                                 + apiKey);
-        theWebJobCall.update(augURL,
+        WebCall.update(augURL,
                              convertAttributesToNameValuePair(aJob.getAttributes()));
 
     }
@@ -618,10 +623,10 @@ public class JobControllerImpl implements JobController {
     {
 
 
-        String url = theWebUtil.urlTransform(theWebUtil.urlTransform(URL, "/" + aJobId + "/gold?key=" + apiKey),
+        String url = WebUtil.urlTransform(WebUtil.urlTransform(URL, "/" + aJobId + "/gold?key=" + apiKey),
                                              param);
 
-        theWebJobCall.put(url);
+        WebCall.put(url);
     }
 
     private List<String> getListOfJudgments(final JSONObject aJudgJson) throws JSONException

@@ -1,12 +1,16 @@
 package nl.wisdelft.cf.job;
 
-import nl.wisdelft.cf.datamodel.*;
-import nl.wisdelft.cf.exception.*;
-import nl.wisdelft.cf.order.*;
+import nl.wisdelft.cf.datamodel.Job;
+import nl.wisdelft.cf.datamodel.Judgment;
+import nl.wisdelft.cf.datamodel.Order;
+import nl.wisdelft.cf.datamodel.Unit;
 
-import org.json.*;
+import nl.wisdelft.cf.exception.NullAPIKeyException;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 public interface JobController {
 
@@ -87,6 +91,12 @@ public interface JobController {
 
     public JSONObject getUnitsStatus(String aJobId);
 
+    /**
+     * Order (run) a job
+     *
+     * @param aOrder
+     */
+    public void order(final Order aOrder);
 
     /**
      * [ web call ] Pauses the job
