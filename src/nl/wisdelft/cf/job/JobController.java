@@ -54,7 +54,7 @@ public interface JobController {
      *
      * @return
      */
-    public List<Unit> getJobUnits(String aJobId);
+    public List<Unit> getJobUnits(String aJobId, Integer page);
 
     /**
      * [ web call ] Get all the attributes for that given jobId
@@ -148,11 +148,7 @@ public interface JobController {
      */
     public void setChannels(String aJobId, List<String> channels);
 
-    // TODO
-    // public void copy(String all_unit,String gold);
-
-    // TODO
-    public List<Judgment> getJudgments(String aJobId);
+    public List<Judgment> getJudgments(String aJobId, Integer page);
 
     /**
      * [ web call ] Splits the with and on parameters specified.

@@ -1,5 +1,7 @@
 package nl.wisdelft.cf.job;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import nl.wisdelft.cf.datamodel.Job;
 import nl.wisdelft.cf.datamodel.Judgment;
@@ -203,14 +205,17 @@ public class JobControllerImpl implements JobController {
 
     @SuppressWarnings("rawtypes")
     @Override
-    public List<Unit> getJobUnits(String aJobId)
+    public List<Unit> getJobUnits(String aJobId, Integer page)
     {
 
-        // Fetch all the units
+        page = MoreObjects.firstNonNull(page, 1);
+
+        // Fetch all the units on the given page
         List<Unit> units = Lists.newArrayList();
-        String augURL = WebUtil.urlTransform(URL,
+        String augURL = WebUtil.urlTransform(WebUtil.urlTransform(URL,
                                                 "/" + aJobId
-                                                + "/units.json?key=" + apiKey);
+                                                + "/units.json?key=" + apiKey),
+                ImmutableMap.of("page", page.toString()));
 
         LOGGER.info("Obtaining units for job with id  - {} ",
                     aJobId);
@@ -311,7 +316,7 @@ public class JobControllerImpl implements JobController {
 
         return WebCall.get(WebUtil.urlTransform(URL,
                                                          "/" + aJobId
-                                                         + "/status.json?key=" + apiKey));
+                                                         + "/ping.json?key=" + apiKey));
     }
 
     @Override
@@ -327,15 +332,17 @@ public class JobControllerImpl implements JobController {
     }
 
     @Override
-    public List<Judgment> getJudgments(String aJobId)
+    public List<Judgment> getJudgments(String aJobId, Integer page)
     {
+        page = MoreObjects.firstNonNull(page, 1);
 
         try
         {
 
-            String augURL = WebUtil.urlTransform(URL,
+            String augURL = WebUtil.urlTransform(WebUtil.urlTransform(URL,
                                                     "/" + aJobId
-                                                    + "/judgments.json?key=" + apiKey);
+                                                    + "/judgments.json?key=" + apiKey),
+                    ImmutableMap.of("page", page.toString()));
 
             LOGGER.info("Getting judgments for job id  - {}",
                         aJobId);
